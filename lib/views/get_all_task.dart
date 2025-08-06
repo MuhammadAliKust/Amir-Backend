@@ -30,9 +30,7 @@ class GetAllTaskView extends StatelessWidget {
             onPressed: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(
-                  builder: (context) => GetCompletedTaskView(),
-                ),
+                MaterialPageRoute(builder: (context) => GetCompletedTaskView()),
               );
             },
             icon: Icon(Icons.circle),
@@ -60,6 +58,45 @@ class GetAllTaskView extends StatelessWidget {
                 leading: Icon(Icons.task),
                 title: Text(taskList[i].title.toString()),
                 subtitle: Text(taskList[i].description.toString()),
+                trailing: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Checkbox(
+                      value: taskList[i].isCompleted,
+                      onChanged: (val) async {
+                        try {
+                          await TaskServices().markTaskAsComplete(taskList[i]);
+                        } catch (e) {
+                          ScaffoldMessenger.of(
+                            context,
+                          ).showSnackBar(SnackBar(content: Text(e.toString())));
+                        }
+                      },
+                    ),
+                    IconButton(
+                      onPressed: () async {
+                        try {
+                          await TaskServices().deleteTask(taskList[i]).then((
+                            val,
+                          ) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text(
+                                  "Task has been deleted successfully",
+                                ),
+                              ),
+                            );
+                          });
+                        } catch (e) {
+                          ScaffoldMessenger.of(
+                            context,
+                          ).showSnackBar(SnackBar(content: Text(e.toString())));
+                        }
+                      },
+                      icon: Icon(Icons.delete, color: Colors.red),
+                    ),
+                  ],
+                ),
               );
             },
           );
