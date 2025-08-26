@@ -3,6 +3,7 @@ import 'package:amir_backend/services/task.dart';
 import 'package:amir_backend/views/create_task.dart';
 import 'package:amir_backend/views/get_completed_task.dart';
 import 'package:amir_backend/views/get_incompleted_task.dart';
+import 'package:amir_backend/views/get_priority.dart';
 import 'package:amir_backend/views/update_task.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -16,6 +17,15 @@ class GetAllTaskView extends StatelessWidget {
       appBar: AppBar(
         title: Text("Get All Task"),
         actions: [
+          IconButton(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => GetPriorityView()),
+              );
+            },
+            icon: Icon(Icons.category),
+          ),
           IconButton(
             onPressed: () {
               Navigator.push(
