@@ -1,4 +1,6 @@
+import 'package:amir_backend/models/priority.dart';
 import 'package:amir_backend/models/task.dart';
+import 'package:amir_backend/services/priority.dart';
 import 'package:amir_backend/services/task.dart';
 import 'package:flutter/material.dart';
 
@@ -13,6 +15,17 @@ class _CreateTaskViewState extends State<CreateTaskView> {
   TextEditingController titleController = TextEditingController();
   TextEditingController descriptionController = TextEditingController();
   bool isLoading = false;
+  List<PriorityModel> priorityList = [];
+  PriorityModel? _selectedPriority;
+
+  @override
+  void initState() {
+    PriorityServices().getPriorities().then((val) {
+      priorityList = val;
+      setState(() {});
+    });
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -22,6 +35,18 @@ class _CreateTaskViewState extends State<CreateTaskView> {
         children: [
           TextField(controller: titleController),
           TextField(controller: descriptionController),
+          DropdownButton(
+            items: priorityList.map((e) {
+              return DropdownMenuItem(value: e, child: Text(e.name.toString()));
+            }).toList(),
+            value: _selectedPriority,
+            isExpanded: true,
+            hint: Text("Select Priority"),
+            onChanged: (val) {
+              _selectedPriority = val;
+              setState(() {});
+            },
+          ),
           SizedBox(height: 20),
           isLoading
               ? Center(child: CircularProgressIndicator())
@@ -47,6 +72,7 @@ class _CreateTaskViewState extends State<CreateTaskView> {
                               title: titleController.text,
                               description: descriptionController.text,
                               isCompleted: false,
+                              priorityID: _selectedPriority!.docId.toString(),
                               image: "",
                               createdAt: DateTime.now().millisecondsSinceEpoch,
                             ),

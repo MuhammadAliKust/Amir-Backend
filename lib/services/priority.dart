@@ -40,4 +40,15 @@ class PriorityServices {
               .toList(),
         );
   }
+  ///Get All Priorities
+  Future<List<PriorityModel>> getPriorities() {
+    return FirebaseFirestore.instance
+        .collection('priorityCollection')
+        .get()
+        .then(
+          (list) => list.docs
+              .map((json) => PriorityModel.fromJson(json.data()))
+              .toList(),
+        );
+  }
 }

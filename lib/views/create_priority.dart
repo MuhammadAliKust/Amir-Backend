@@ -30,6 +30,8 @@ class _CreatePriorityViewState extends State<CreatePriorityView> {
                 return;
               }
               try {
+                isLoading = true;
+                setState(() {});
                 await PriorityServices()
                     .createPriority(
                       PriorityModel(
@@ -38,6 +40,8 @@ class _CreatePriorityViewState extends State<CreatePriorityView> {
                       ),
                     )
                     .then((val) {
+                      isLoading = false;
+                      setState(() {});
                       showDialog(
                         context: context,
                         builder: (context) {
@@ -60,6 +64,8 @@ class _CreatePriorityViewState extends State<CreatePriorityView> {
                       );
                     });
               } catch (e) {
+                isLoading = false;
+                setState(() {});
                 ScaffoldMessenger.of(
                   context,
                 ).showSnackBar(SnackBar(content: Text(e.toString())));
