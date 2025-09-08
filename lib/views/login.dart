@@ -1,7 +1,10 @@
 import 'package:amir_backend/services/auth.dart';
+import 'package:amir_backend/services/user.dart';
 import 'package:amir_backend/views/register.dart';
 import 'package:amir_backend/views/reset_pwd.dart';
 import 'package:flutter/material.dart';
+
+import '../models/user.dart';
 
 class LoginView extends StatefulWidget {
   const LoginView({super.key});
@@ -48,7 +51,10 @@ class _LoginViewState extends State<LoginView> {
                             email: emailController.text,
                             pwd: pwdController.text,
                           )
-                          .then((val) {
+                          .then((val) async {
+                            UserModel userModel = await UserServices().getUserByID(
+                              val.uid.toString(),
+                            );
                             isLoading = false;
                             setState(() {});
                             showDialog(
@@ -57,7 +63,7 @@ class _LoginViewState extends State<LoginView> {
                                 return AlertDialog(
                                   title: Text("Message"),
                                   content: Text(
-                                    "User has been logged In successfully",
+                                    "${userModel.name} has been logged In successfully",
                                   ),
                                   actions: [
                                     TextButton(
