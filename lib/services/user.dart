@@ -20,4 +20,16 @@ class UserServices {
           return UserModel.fromJson(val.data()!);
         });
   }
+
+  ///Update Profile
+  Future updateProfile(UserModel model) async {
+    return await FirebaseFirestore.instance
+        .collection('userCollection')
+        .doc(model.docId)
+        .update({
+          'name': model.name,
+          'phone': model.phone,
+          'address': model.address,
+        });
+  }
 }

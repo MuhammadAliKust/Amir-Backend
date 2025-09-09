@@ -4,6 +4,7 @@ import 'package:amir_backend/views/create_task.dart';
 import 'package:amir_backend/views/get_completed_task.dart';
 import 'package:amir_backend/views/get_incompleted_task.dart';
 import 'package:amir_backend/views/get_priority.dart';
+import 'package:amir_backend/views/profile.dart';
 import 'package:amir_backend/views/update_task.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -45,6 +46,15 @@ class GetAllTaskView extends StatelessWidget {
               );
             },
             icon: Icon(Icons.circle),
+          ),
+          IconButton(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => ProfileView()),
+              );
+            },
+            icon: Icon(Icons.person),
           ),
         ],
       ),
