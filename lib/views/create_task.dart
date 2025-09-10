@@ -1,8 +1,10 @@
 import 'package:amir_backend/models/priority.dart';
 import 'package:amir_backend/models/task.dart';
+import 'package:amir_backend/provider/user.dart';
 import 'package:amir_backend/services/priority.dart';
 import 'package:amir_backend/services/task.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class CreateTaskView extends StatefulWidget {
   const CreateTaskView({super.key});
@@ -29,6 +31,7 @@ class _CreateTaskViewState extends State<CreateTaskView> {
 
   @override
   Widget build(BuildContext context) {
+    var userProvider = Provider.of<UserProvider>(context);
     return Scaffold(
       appBar: AppBar(title: Text("Create Task")),
       body: Column(
@@ -74,6 +77,7 @@ class _CreateTaskViewState extends State<CreateTaskView> {
                               isCompleted: false,
                               priorityID: _selectedPriority!.docId.toString(),
                               image: "",
+                              userID: userProvider.getUser().docId.toString(),
                               createdAt: DateTime.now().millisecondsSinceEpoch,
                             ),
                           )

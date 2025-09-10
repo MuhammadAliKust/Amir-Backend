@@ -13,6 +13,7 @@ class TaskModel {
   final bool? isCompleted;
   final String? image;
   final String? priorityID;
+  final String? userID;
   final int? createdAt;
 
   TaskModel({
@@ -22,26 +23,31 @@ class TaskModel {
     this.isCompleted,
     this.priorityID,
     this.image,
+    this.userID,
     this.createdAt,
   });
 
-  factory TaskModel.fromJson(Map<String, dynamic> json) => TaskModel(
-    docId: json["docID"],
-    title: json["title"],
-    description: json["description"],
-    isCompleted: json["isCompleted"],
-    priorityID: json["priorityID"],
-    image: json["image"],
-    createdAt: json["createdAt"],
-  );
+  factory TaskModel.fromJson(Map<String, dynamic> json) =>
+      TaskModel(
+        docId: json["docID"],
+        title: json["title"],
+        description: json["description"],
+        isCompleted: json["isCompleted"],
+        priorityID: json["priorityID"],
+        image: json["image"],
+        userID: json["userID"],
+        createdAt: json["createdAt"],
+      );
 
-  Map<String, dynamic> toJson(String taskID) => {
-    "docID": taskID,
-    "title": title,
-    "description": description,
-    "isCompleted": isCompleted,
-    "image": image,
-    "priorityID": priorityID,
-    "createdAt": createdAt,
-  };
+  Map<String, dynamic> toJson(String taskID) =>
+      {
+        "docID": taskID,
+        "title": title,
+        "description": description,
+        "isCompleted": isCompleted,
+        "image": image,
+        "priorityID": priorityID,
+        "userID": userID,
+        "createdAt": createdAt,
+      };
 }

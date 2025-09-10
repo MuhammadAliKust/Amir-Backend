@@ -1,4 +1,5 @@
 import 'package:amir_backend/models/task.dart';
+import 'package:amir_backend/provider/user.dart';
 import 'package:amir_backend/services/task.dart';
 import 'package:amir_backend/views/create_task.dart';
 import 'package:amir_backend/views/get_completed_task.dart';
@@ -14,6 +15,7 @@ class GetAllTaskView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var userProvider = Provider.of<UserProvider>(context);
     return Scaffold(
       appBar: AppBar(
         title: Text("Get All Task"),
@@ -68,7 +70,9 @@ class GetAllTaskView extends StatelessWidget {
         child: Icon(Icons.add),
       ),
       body: StreamProvider.value(
-        value: TaskServices().getAllTask(),
+        value: TaskServices().getAllTask(
+          userProvider.getUser().docId.toString(),
+        ),
         initialData: [TaskModel()],
         builder: (context, child) {
           List<TaskModel> taskList = context.watch<List<TaskModel>>();
