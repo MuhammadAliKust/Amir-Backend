@@ -89,5 +89,39 @@ class TaskServices {
         );
   }
 
-  ///Get Priority Task
+  ///Mark Task as Favorite
+  Future addToFavorite({required String taskID, required String userID}) async {
+    return await FirebaseFirestore.instance
+        .collection('taskCollection')
+        .doc(taskID)
+        .update({
+          'favUsers': FieldValue.arrayUnion([userID]),
+        });
+  }
+
+  ///Remove from Favorite
+  Future removeToFavorite({
+    required String taskID,
+    required String userID,
+  }) async {
+    return await FirebaseFirestore.instance
+        .collection('taskCollection')
+        .doc(taskID)
+        .update({
+          'favUsers': FieldValue.arrayRemove([userID]),
+        });
+  }
+
+  ///Get My Favorite Tasks
+  Stream<List<TaskModel>> getMyFavoriteTask(String userID) {
+    return FirebaseFirestore.instance
+        .collection('taskCollection')
+        .where('favUsers', arrayContains: userID)
+        .snapshots()
+        .map(
+          (taskList) => taskList.docs
+              .map((taskJson) => TaskModel.fromJson(taskJson.data()))
+              .toList(),
+        );
+  }
 }

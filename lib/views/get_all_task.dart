@@ -83,6 +83,7 @@ class GetAllTaskView extends StatelessWidget {
                 leading: Icon(Icons.task),
                 title: Text(taskList[i].title.toString()),
                 subtitle: Text(taskList[i].description.toString()),
+
                 trailing: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
@@ -119,6 +120,37 @@ class GetAllTaskView extends StatelessWidget {
                         }
                       },
                       icon: Icon(Icons.delete, color: Colors.red),
+                    ),
+                    IconButton(
+                      onPressed: () async {
+                        try {
+                          if (taskList[i].favUsers!.contains(
+                            userProvider.getUser()!.docId.toString(),
+                          )) {
+                            await TaskServices().removeToFavorite(
+                              userID: userProvider.getUser().docId.toString(),
+                              taskID: taskList[i].docId.toString(),
+                            );
+                          } else {
+                            await TaskServices().addToFavorite(
+                              userID: userProvider.getUser().docId.toString(),
+                              taskID: taskList[i].docId.toString(),
+                            );
+                          }
+                        } catch (e) {
+                          ScaffoldMessenger.of(
+                            context,
+                          ).showSnackBar(SnackBar(content: Text(e.toString())));
+                        }
+                      },
+                      icon: Icon(
+                        taskList[i].favUsers!.contains(
+                              userProvider.getUser().docId.toString(),
+                            )
+                            ? Icons.favorite
+                            : Icons.favorite_border,
+                        color: Colors.red,
+                      ),
                     ),
                     IconButton(
                       onPressed: () {
