@@ -1,3 +1,4 @@
+import 'package:amir_backend/provider/state.dart';
 import 'package:amir_backend/provider/user.dart';
 import 'package:amir_backend/views/get_all_task.dart';
 import 'package:amir_backend/views/login.dart';
@@ -10,7 +11,10 @@ void main() async {
   await Firebase.initializeApp();
   runApp(
     MultiProvider(
-      providers: [ChangeNotifierProvider(create: (context) => UserProvider())],
+      providers: [
+        ChangeNotifierProvider(create: (context) => UserProvider()),
+        ChangeNotifierProvider(create: (context) => StateProvider()),
+      ],
       child: const MyApp(),
     ),
   );

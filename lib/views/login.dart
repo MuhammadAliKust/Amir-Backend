@@ -1,3 +1,4 @@
+import 'package:amir_backend/provider/state.dart';
 import 'package:amir_backend/provider/user.dart';
 import 'package:amir_backend/services/auth.dart';
 import 'package:amir_backend/services/user.dart';
@@ -19,11 +20,11 @@ class LoginView extends StatefulWidget {
 class _LoginViewState extends State<LoginView> {
   TextEditingController emailController = TextEditingController();
   TextEditingController pwdController = TextEditingController();
-  bool isLoading = false;
 
   @override
   Widget build(BuildContext context) {
     var userProvider = Provider.of<UserProvider>(context);
+    var state = Provider.of<StateProvider>(context);
     return Scaffold(
       appBar: AppBar(title: Text("Login")),
       body: Column(
@@ -31,7 +32,7 @@ class _LoginViewState extends State<LoginView> {
           TextField(controller: emailController),
           TextField(controller: pwdController),
           SizedBox(height: 20),
-          isLoading
+          state.getLoading()
               ? Center(child: CircularProgressIndicator())
               : ElevatedButton(
                   onPressed: () async {
@@ -48,8 +49,7 @@ class _LoginViewState extends State<LoginView> {
                       return;
                     }
                     try {
-                      isLoading = true;
-                      setState(() {});
+                      state.setLoading(true);
                       await AuthServices()
                           .loginUser(
                             email: emailController.text,
@@ -59,8 +59,7 @@ class _LoginViewState extends State<LoginView> {
                             UserModel userModel = await UserServices()
                                 .getUserByID(val.uid.toString());
                             userProvider.setUser(userModel);
-                            isLoading = false;
-                            setState(() {});
+                            state.setLoading(false);
                             showDialog(
                               context: context,
                               builder: (context) {
@@ -75,7 +74,8 @@ class _LoginViewState extends State<LoginView> {
                                         Navigator.push(
                                           context,
                                           MaterialPageRoute(
-                                            builder: (context) => GetAllTaskView(),
+                                            builder: (context) =>
+                                                GetAllTaskView(),
                                           ),
                                         );
                                       },
@@ -87,8 +87,7 @@ class _LoginViewState extends State<LoginView> {
                             );
                           });
                     } catch (e) {
-                      isLoading = false;
-                      setState(() {});
+                      state.setLoading(false);
                       ScaffoldMessenger.of(
                         context,
                       ).showSnackBar(SnackBar(content: Text(e.toString())));
